@@ -1,7 +1,19 @@
 import React from "react";
+import { BrowserRouter, Route, Routes } from "react-router-dom";
+import Home from "./routes/Home";
+import Detail from "./routes/Detail";
+import Write from "./routes/Write";
 
 function App() {
-  return <div></div>;
+  return (
+    <BrowserRouter>
+      <Routes>
+        <Route path="/" element={<Home />} />
+        <Route path="/detail" element={<Detail />} />
+        <Route path="/write" element={<Write />} />
+      </Routes>
+    </BrowserRouter>
+  );
 }
 
 export default App;
