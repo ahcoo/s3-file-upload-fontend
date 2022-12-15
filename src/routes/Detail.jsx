@@ -1,10 +1,23 @@
-import React from "react";
+import axios from "axios";
+import React, { useEffect, useState } from "react";
 import { useParams, useNavigate } from "react-router-dom";
 
 const Detail = () => {
   const navigate = useNavigate();
   const { id } = useParams();
+  const [article, setArticle] = useState([]);
   console.log(id);
+
+useEffect(() => {
+  const getData = async() => {
+    const data = await axios ({
+      method: "GET", url: `http://localhost:8089/article/${id}`
+    });
+    setArticle(data.data);
+  }
+  getData()
+}, []);
+
   return (
     <div className="flex flex-col max-w-5xl m-auto">
       <button
@@ -15,9 +28,9 @@ const Detail = () => {
       >
         메인으로
       </button>
-      <div className="ml-auto mr-0">작성 일시</div>
-      <div className="form-control w-full mt-8">제목</div>
-      <div className="form-control w-full mt-6">내용</div>
+      <div className="ml-auto mr-0">{article?.createDate}</div>
+      <div className="form-control w-full mt-8">{article?.title}</div>
+      <div className="form-control w-full mt-6">{article?.body}</div>
     </div>
   );
 };

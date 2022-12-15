@@ -46,6 +46,13 @@ const Write = () => {
           className="input input-bordered w-full h-96"
         />
       </div>
+      <input type="file" className="file-input file-input-bordered file-input-info w-96 mr-0 ml-auto mt-4"
+      multiple//multifle : 파일 여러개를 한 번에 올릴 수 있다.
+      onChange={(e)=> {
+        //console.log(e.target.files) //<<정해져있음
+
+      }}
+       />
       <button
         className="btn btn-outline btn-info ml-auto mr-0 mt-4 w-24"
         onClick={() => {
