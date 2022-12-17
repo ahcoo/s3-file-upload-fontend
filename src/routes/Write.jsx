@@ -13,7 +13,7 @@ const Write = () => {
       <button
         className="btn btn-outline btn-info ml-auto mr-0 mt-4 w-24"
         onClick={() => {
-          navigate("/");
+          navigate('/');
         }}
       >
         메인으로
@@ -72,6 +72,7 @@ const Write = () => {
 
           formData.append("title", title);
           formData.append("body", body);
+
           const sendData = async () => {
             const data = await axios({
               method: "POST",
@@ -88,7 +89,7 @@ const Write = () => {
 
             if (data.status === 200) {
               alert("작성이 성공적으로 완료되었습니다.");
-              navigate("/");
+              navigate('/');
             } else {
               alert("뭔가 문제가 있습니다.");
             }
