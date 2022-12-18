@@ -9,6 +9,7 @@ const Write = () => {
   const navigate = useNavigate();
   const [title, setTitle] = useState("");
   const [body, setBody] = useState("");
+  const [imageIdList, setImageIdList] = useState([]);
   const formData = new FormData();
   const toastRef = useRef();
 
@@ -41,9 +42,28 @@ const Write = () => {
           useCommandShortcut={true}
           ref={toastRef}
           plugins={[[codeSyntaxHighlight, { highlighter: Prism }]]}
+          hooks={{
+            addImageBlobHook: async (blob, callback) => {
+              console.log(blob); 
+              const formData = new FormData();
+              formData.append('file', blob);
+              const data = await axios ({
+                method: 'POST',
+                url: `http://localhost:8089/article/image`,
+                data: formData,
+              })
+              setImageIdList(prev => prev.concat(parseInt(data.data.id)));
+              console.log(data.data);
+              // File {name: '카레유.png', ...}
+              // 1. 첨부 이미지 파일을 서버 전송 후 이미지 경로 url을 받아옴
+              // const img Url = await ... 서버 전송 / 경로 수신 코드 ...
+              //2. 첨부된 이미지를 화면에 표시 
+              callback(data.data.imgUrl, '')
+            }
+          }}
          />
 
-      <input
+      {/* <input
         type="file"
         className="file-input file-input-bordered file-input-info w-96 mr-0 ml-auto mt-4"
         multiple //multifle : 파일 여러개를 한 번에 올릴 수 있다.
@@ -53,7 +73,7 @@ const Write = () => {
             formData.append("files", e.target.files[i]);
           }
         }}
-      />
+      /> */}
       <button
         className="btn btn-outline btn-info ml-auto mr-0 mt-4 w-24"
         onClick={() => {
@@ -70,6 +90,7 @@ const Write = () => {
 
           formData.append("title", title);
           formData.append("body", toastRef.current?.getInstance().getMarkdown());
+          formData.append("imageIdList", imageIdList);
 
           const sendData = async () => {
             const data = await axios({
