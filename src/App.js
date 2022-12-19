@@ -4,6 +4,7 @@ import Home from "./routes/Home";
 import Detail from "./routes/Detail";
 import Write from "./routes/Write";
 import Edit from "./routes/Edit";
+import Login from "./routes/Login";
 
 function App() {
   return (
@@ -13,6 +14,7 @@ function App() {
         <Route path="/write" element={<Write />} />
         <Route path="/detail/:id" element={<Detail />} />
         <Route path="/edit/:id" element={<Edit />} />
+        <Route path="/login" element={<Login />} />
       </Routes>
     </BrowserRouter>
   );

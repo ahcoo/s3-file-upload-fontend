@@ -2,10 +2,14 @@
 @tailwind components;
 @tailwind utilities;
 
-input::placeholder {
-    font-size : 2rem;
+input {
+  outline: none;
 }
 
-input {
-    outline: none;
+input::placeholder {
+  font-size: 2rem;
+}
+
+.search-input::placeholder {
+  font-size: 1rem;
 }
