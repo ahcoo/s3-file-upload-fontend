@@ -1,13 +1,21 @@
 import React from "react";
 import { useNavigate } from "react-router-dom";
+import { useRecoilState } from "recoil";
+import { authenticationState } from "../recoil/store";
 import Login from "../routes/Login";
 
 const Header = () => {
   const navigate = useNavigate();
+  const [authenticated, setAuthenticated] = useRecoilState(authenticationState);
   return (
     <header>
       <div className="navbar bg-base-100">
-        <div className="flex-1">
+        <div
+          className="flex-1"
+          onClick={() => {
+            navigate("/");
+          }}
+        >
           <a className="btn btn-ghost normal-case text-xl">SBS community</a>
         </div>
         <div className="flex-none gap-2">
@@ -18,40 +26,28 @@ const Header = () => {
               className="input input-bordered search-input"
             />
           </div>
-          <div className="dropdown dropdown-end">
-            {/* <label tabIndex={0} className='btn btn-ghost btn-circle avatar'>
-              <div className='w-10 rounded-full'>
-                <img src='https://placeimg.com/80/80/people' />
-              </div>
-            </label> */}
+          {authenticated ? (
             <div
               className="cursor-pointer"
               onClick={() => {
-                {
-                  navigate(`/login`);
-                }
+                //인증 해제
+                setAuthenticated(false);
+                //로그인 토큰 삭제
+                localStorage.removeItem("login-token");
+              }}
+            >
+              로그아웃
+            </div>
+          ) : (
+            <div
+              className="cursor-pointer"
+              onClick={() => {
+                navigate(`/login`);
               }}
             >
               로그인
             </div>
-            {/* <ul
-              tabIndex={0}
-              className='mt-3 p-2 shadow menu menu-compact dropdown-content bg-base-100 rounded-box w-52'
-            >
-              <li>
-                <a className='justify-between'>
-                  Profile
-                  <span className='badge'>New</span>
-                </a>
-              </li>
-              <li>
-                <a>Settings</a>
-              </li>
-              <li>
-                <a>Logout</a>
-              </li>
-            </ul> */}
-          </div>
+          )}
         </div>
       </div>
     </header>

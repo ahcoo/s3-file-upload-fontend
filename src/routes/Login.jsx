@@ -1,10 +1,15 @@
 import axios from "axios";
 import React, { useState } from "react";
+import { useSetRecoilState } from "recoil";
+import { authenticationState } from "../recoil/store";
 import { BACKEND_URL } from "../utils/env";
+import { useNavigate } from "react-router-dom";
 
-const Login = () => {
+const Login = ({ to }) => {
+  const navigate = useNavigate();
   const [userId, setUserId] = useState("");
   const [userPassword, setUserPassword] = useState("");
+  const setAuthenticated = useSetRecoilState(authenticationState);
 
   const onChangeIdInput = (e) => {
     setUserId(e.target.value);
@@ -25,12 +30,27 @@ const Login = () => {
           password: userPassword,
         },
       });
-      console.log(data.headers.authorization);
+      if (data.status === 200) {
+        if (data.headers.authorization) {
+          setAuthenticated(true);
+          localStorage.setItem("login-token", data.headers.authorization);
+          if (to === undefined) {
+            navigate("/");
+          } else {
+            navigate(to);
+          }
+          alert("로그인 성공");
+        }
+      } else {
+        alert("로그인 실패");
+        return;
+      }
     };
+    login();
   };
 
   return (
-    <div className="">
+    <div className="ml-8 mt-8 text-3xl">
       <h2 className="text-3xl h-16">Login</h2>
       <form action="" onSubmit={doLogin} className="flex flex-col">
         <input
@@ -47,7 +67,7 @@ const Login = () => {
           value={userPassword}
           onChange={onChangePasswordInput}
         />
-        <button type="submit" className="w-32" onClick={() => {}}>
+        <button type="submit" className="w-32 mt-8" onClick={() => {}}>
           [Login]
         </button>
       </form>
